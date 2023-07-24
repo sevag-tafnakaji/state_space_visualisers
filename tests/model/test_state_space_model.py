@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from src.state_space_model import StateSpace
+from src.model.state_space_model import StateSpace
 import pytest
 
 

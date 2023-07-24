@@ -1,4 +1,6 @@
 pytest
 numpy
 scipy
+matplotlib
 PyQt5
+sympy
