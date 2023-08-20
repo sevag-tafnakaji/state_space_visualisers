@@ -57,8 +57,13 @@ class StateSpace:
         """
         if self.discrete:
             raise TypeError("Trying to discretise an already discrete model.")
-        continuous_set = np.column_stack((np.row_stack((self.A, np.zeros(self.A.shape[1]))),
-                                          np.row_stack((self.B, np.zeros(self.B.shape[1])))))
+        num_of_states = self.A.shape[0]
+        num_of_inputs = self.B.shape[1]
+
+        continuous_set = np.column_stack((np.row_stack((self.A, np.zeros((num_of_inputs,
+                                                                          num_of_states)))),
+                                          np.row_stack((self.B, np.zeros((num_of_inputs,
+                                                                          num_of_inputs))))))
 
         discrete_set = linalg.expm(continuous_set * sampling_time)
 
@@ -127,7 +132,6 @@ class StateSpace:
             else:
                 observability_matrix = np.concatenate(
                     (observability_matrix, self.C @ np.linalg.matrix_power(self.A, i)), axis=0)
-        print(observability_matrix, np.linalg.matrix_rank(observability_matrix), n)
         return np.linalg.matrix_rank(observability_matrix) == n
 
     def is_stabilizable(self) -> bool:

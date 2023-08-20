@@ -45,13 +45,15 @@ class LinearKalmanFilter():
             Tuple[ndarray, ndarray]: predicted estimate of states and their covariance
             (x_{k|k-1} and P_{k|k-1}).
         """
-        prediction_p = self.model.A @ self.previous_p @ self.model.A.T + self.model.Q
-        prediction_estimate = self.model.A @ self.previous_estimate + self.model.B * given_input
+        prediction_p = self.model.A @ self.previous_p @ self.model.A.T + (
+            self.model.N @ self.model.Q @ self.model.N.T)
+
+        prediction_estimate = self.model.A @ self.previous_estimate + self.model.B @ given_input
 
         return prediction_estimate, prediction_p
 
     def update_step(self, given_measurement: ndarray, prediction_estimate: ndarray,
-                    prediction_p: ndarray) -> Tuple[ndarray, ndarray]:
+                    prediction_p: ndarray) -> Tuple[ndarray, ndarray, ndarray]:
         """
         Perform update step
 
@@ -61,18 +63,18 @@ class LinearKalmanFilter():
             prediction_p (ndarray): covariance of predicted estimate of states (P_{k|k-1})
 
         Returns:
-            Tuple[ndarray, ndarray]: updated estimate of states, and their covariance matrix.
+            Tuple[ndarray, ndarray, ndarray]: updated estimate of states,
+            and their covariance matrix.
         """
         a_dim = self.model.A.shape[0]
-        innovation = given_measurement - self.model.C @ prediction_estimate
-        innovation_covariance = \
+        innovation: ndarray = given_measurement - self.model.C @ prediction_estimate
+        innovation_covariance: ndarray = \
             self.model.C @ prediction_p @ self.model.C.T + self.model.R
-        kalman_gain = prediction_p @ self.model.C.T @ la.inv(innovation_covariance)
+        kalman_gain: ndarray = prediction_p @ self.model.C.T @ la.inv(innovation_covariance)
 
-        updated_estimate = prediction_estimate + kalman_gain @ innovation
-        updated_p = (np.eye(a_dim) - kalman_gain @ self.model.C) @ prediction_p
-        post_fit_residual = given_measurement - self.model.C @ updated_estimate
-
+        updated_estimate: ndarray = prediction_estimate + kalman_gain @ innovation
+        updated_p: ndarray = (np.eye(a_dim) - kalman_gain @ self.model.C) @ prediction_p
+        post_fit_residual: ndarray = given_measurement - self.model.C @ updated_estimate
         self.previous_estimate = updated_estimate
         self.previous_p = updated_p
 

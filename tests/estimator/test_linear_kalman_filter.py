@@ -10,10 +10,11 @@ from src.estimator.linear_kalman_filter import LinearKalmanFilter
 A = np.array([[-8, 1], [3, -20.3]])
 B = np.array([[1], [2]])
 C = np.array([[1, 0]])
+N = np.eye(2)
 Q = np.eye(2)
 R = np.array([1]).reshape(1, 1)
 
-test_model = StateSpace(A, B, C, None, Q, R)
+test_model = StateSpace(A, B, C, N, Q, R)
 
 test_model_discrete = test_model.convert_to_discrete(1e-3)
 
@@ -35,7 +36,8 @@ def test_prediction_step():
     expected_estimate = np.array([[0.9930], [0.9829]])
     expected_p_matrix = np.array([[1.9841, 0.0039], [0.0039, 1.9602]])
 
-    actual_predicted_estimate, actual_predicted_p = kalman.prediction_step(given_input=0)
+    actual_predicted_estimate, actual_predicted_p = kalman.prediction_step(
+        given_input=np.array([[0]]))
 
     print(actual_predicted_estimate, actual_predicted_p)
     print(expected_estimate, expected_p_matrix)

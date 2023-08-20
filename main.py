@@ -1,8 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 import os
-os.environ['QT_QPA_PLATFORM'] = 'eglfs'
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
+os.environ['QT_QPA_PLATFORM'] = 'windows'
 
 print(sys.argv)
 app = QApplication(sys.argv)
