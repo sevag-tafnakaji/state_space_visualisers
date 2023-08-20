@@ -41,8 +41,8 @@ class TestStateSpaceModel(TestCase):
             - Calling 'ensure_discrete' method.
 
         THEN
-            - Verify that a discrete model is returned. If originally continuous then a sampling time
-            of 1e-2 is used (by default) to convert to discrete. Assumes no delays.
+            - Verify that a discrete model is returned. If originally continuous then a
+            sampling time of 1e-2 is used (by default) to convert to discrete. Assumes no delays.
         """
 
         # WHEN
