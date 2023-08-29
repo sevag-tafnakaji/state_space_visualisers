@@ -71,8 +71,10 @@ class LQRController():
         """
         if self.l_gains is None:
             self.l_gains = self.get_lqr_gains()
-        lr_matrix = np.negative(np.linalg.pinv(
-            self.m_matrix @ np.linalg.inv(
-                self.model.A - self.model.B @ self.l_gains) @ self.model.B))
-
+        inside_matrix = self.m_matrix @ np.linalg.inv(
+                self.model.A - self.model.B @ self.l_gains) @ self.model.B
+        if inside_matrix.size > 1:
+            lr_matrix = np.negative(np.linalg.pinv(inside_matrix))
+        else:
+            lr_matrix = np.negative(inside_matrix.reshape((1, 1)))
         return np.negative(self.l_gains @ state) + lr_matrix @ self.reference_value
