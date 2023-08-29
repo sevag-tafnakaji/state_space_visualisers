@@ -1,0 +1,17 @@
+A matrix: '[1, 0.01, 0.0001, 0;0, 0.9982, 0.0267, 0.0001;0, 0, 1.0016, 0.01;0, -0.0045,
+  0.3119, 1.0016]'
+B matrix: '[0.0001; 0.0182; 0.0002; 0.0454]'
+C matrix: '[1, 0, 0, 0; 0, 0, 1, 0]'
+LQR input weight matrix - R: '1'
+LQR state weight matrix - Q: '[5000, 0, 0, 0; 0, 1, 0, 0; 0, 0, 6000, 0; 0, 0, 0, 1]'
+Reference value - r: '1'
+initial state - x_0: '[0; 0; 1.57; 0]'
+initial state error covariance - P_0: '[1, 0, 0, 0; 0, 1, 0, 0; 0, 0, 0.1, 0; 0, 0,
+  0, 1]'
+matrix transformation for state with reference values - M: '[0, 0, 1, 0]'
+measurement noise covariance - R: '[0.01, 0; 0, 0.01]'
+process noise covariance - Q: '[0.01, 0; 0, 0.05]'
+process noise matrix - N: '[0, 0; 1, 0; 0, 0; 0, 1]'
+sampling interval: '0.001'
+simulation timestep - delta t: '0.01'
+Simulation time - t: '5'

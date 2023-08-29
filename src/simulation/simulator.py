@@ -38,8 +38,8 @@ class Simulator():
             previous_estimate (np.ndarray): x_{k-1|k-1}
 
         Returns:
-            Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: next state, measurement,
-            next state estimate, next state estimate covariance.
+            Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, ndarray]: next state, measurement,
+            next state estimate, current input, next state estimate covariance.
         """
         current_input = self.lqr_controller.get_input(previous_estimate)
         num_of_states = self.model.A.shape[0]
@@ -55,7 +55,7 @@ class Simulator():
             measurement_noise = np.random.normal(0, np.sqrt(self.model.R[0]))
 
         next_state = (self.model.A @ previous_state + self.model.B @ current_input) + (
-            self.model.N @ process_noise).reshape(num_of_states, 1)
+                      self.model.N @ process_noise).reshape(num_of_states, 1)
         output = self.model.C @ next_state + measurement_noise
         next_estimate, next_p, _, _, _ = self.kalman.get_next_estimate(current_input, output)
 
